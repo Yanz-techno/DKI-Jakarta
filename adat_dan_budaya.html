@@ -1,0 +1,852 @@
+﻿<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Adat dan Budaya Betawi</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#fffbeb',
+              100: '#fef3c7',
+              200: '#fde68a',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+            },
+            betawi: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              900: '#064e3b',
+            }
+          }
+        }
+      }
+    }
+
+    // Cek memori Tema
+  if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+
+  // Cek memori Ukuran Teks
+  const savedTextSize = localStorage.getItem('textSize') || 'md';
+  document.documentElement.classList.add(`text-size-${savedTextSize}`);
+  
+  </script>
+<style>
+    /* Glowing animated active nav indicator */
+    .nav-indicator {
+      position: absolute;
+      bottom: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #f59e0b, #10b981, #06b6d4);
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.9), 0 0 20px rgba(16, 185, 129, 0.6);
+      border-radius: 9999px;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    /* Glassmorphism & transitions */
+    .glass-nav {
+      background: rgba(15, 23, 42, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Custom carousel keyframe transitions */
+    .carousel-slide {
+      transition: opacity 0.8s ease-in-out, transform 1.2s ease-out;
+    }
+
+    /* -------------------------------------------------------------
+       1. SCROLL REVEAL ANIMATIONS
+       ------------------------------------------------------------- */
+    .scroll-reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    
+    .scroll-reveal.reveal-active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .delay-1 { transition-delay: 100ms; }
+    .delay-2 { transition-delay: 200ms; }
+    .delay-3 { transition-delay: 300ms; }
+
+    /* -------------------------------------------------------------
+       2. PAGE ENTRANCE & EXIT TRANSITION
+       ------------------------------------------------------------- */
+    .page-transition-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: #0f172a;
+      z-index: 999999;
+      transform: translateY(0);
+      transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1);
+      pointer-events: none;
+    }
+
+    body.page-loaded .page-transition-screen {
+      transform: translateY(-100%);
+    }
+
+    body.page-leaving .page-transition-screen {
+      transition: transform 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+      transform: translateY(0);
+    }
+
+    /* Top Page Transition Progress Bar */
+    #page-loader-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, #f59e0b, #10b981, #06b6d4);
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.8), 0 0 16px rgba(16, 185, 129, 0.6);
+      z-index: 99999;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+      pointer-events: none;
+    }
+
+    #page-loader-bar.active {
+      transform: scaleX(1);
+    }
+
+    /* CSS UKURAN TEKS â€” dengan transisi halus */
+html { transition: font-size 0.5s ease; }
+html.text-size-sm { font-size: 14px; }
+html.text-size-md { font-size: 16px; } /* Ukuran Default */
+html.text-size-lg { font-size: 18px; }
+
+    /* -------------------------------------------------------------
+       3. CSS TRANSITIONS â€” TEMA, CARD HOVER, SETTINGS BUTTON
+       ------------------------------------------------------------- */
+    /* Transisi warna halus saat ganti Dark/Light Mode */
+    *, *::before, *::after {
+      transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    /* Kecualikan elemen yang punya transisi sendiri agar tidak konflik */
+    .scroll-reveal,
+    .carousel-slide,
+    .page-transition-screen,
+    #page-loader-bar,
+    .nav-indicator {
+      transition: none;
+    }
+    .scroll-reveal {
+      transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1) !important;
+    }
+    .carousel-slide {
+      transition: opacity 0.8s ease-in-out, transform 1.2s ease-out !important;
+    }
+    .page-transition-screen {
+      transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1) !important;
+    }
+    body.page-leaving .page-transition-screen {
+      transition: transform 0.6s cubic-bezier(0.85, 0, 0.15, 1) !important;
+    }
+    #page-loader-bar {
+      transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease !important;
+    }
+    .nav-indicator {
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    /* Hover Card â€” terangkat halus dengan bayangan lembut */
+    .hover-card {
+      transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.35s ease !important;
+    }
+    .hover-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15), 0 8px 20px -8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Hover Tombol Pengaturan â€” putar & membesar */
+    #settings-toggle {
+      transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s ease !important;
+    }
+    #settings-toggle:hover {
+      transform: rotate(90deg) scale(1.1) !important;
+    }
+    #settings-toggle:active {
+      transform: rotate(90deg) scale(0.95) !important;
+    }
+
+  </style>
+  <style>
+    body[data-page="adat-budaya"] #main-content section:not(#adat):not(#budaya) { display: none; }
+  </style>
+</head>
+<body data-page="adat-budaya" class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-brand-500 selection:text-white relative min-h-screen">
+<div class="page-transition-screen"></div>
+<div id="page-loader-bar"></div>
+<!-- ==================== STICKY TOP NAVBAR ==================== -->
+<header class="sticky top-0 z-40 glass-nav text-white transition-all duration-300">
+<div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+<!-- Brand Logo & Title -->
+<a class="flex items-center gap-3.5 group" href="adat_dan_budaya.html#adat">
+<img alt="Logo DKI Jakarta" class="w-12 h-12 object-contain group-hover:scale-105 transition-transform duration-300 rounded-lg p-1 bg-white/10 border border-white/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALb9yWpm8IzlRgVt0sAbIN5L8eQBbyIraOrclusEA77hFueApmIgzNn-slwOD2jTbIvrtbEc2Wha-scwP8vCNeCsj5rIVFhC8O3Ps7aEGEK89F5YWChegMbPPo1v08cXPByxZVBjNqim03f-atIr7vF6Ss6zUjp6yv_3KCp11fH_zJ4nFb0TsO_fDE0nxWL7vaiBTokjRnvGLSjMf00Jkq-E_CfGr4B_McMgn3KBKl1EGDcdjWyjxB"/>
+<div>
+<span class="block text-xs font-bold tracking-widest text-brand-500 uppercase">Pemerintah Provinsi</span>
+<span class="text-xl font-extrabold tracking-tight text-white group-hover:text-brand-200 transition-colors">DKI JAKARTA</span>
+</div>
+</a>
+<!-- Desktop Navigation Menu -->
+<nav class="relative hidden lg:flex items-center gap-1 font-medium text-sm text-slate-300" id="navbar-links">
+<!-- Floating Animated Neon Underline Indicator -->
+<div class="nav-indicator" id="nav-indicator"></div>
+<a class="nav-item px-3.5 py-2 hover:text-white transition-colors" data-target="hero" href="beranda.html#hero">Beranda</a>
+<a class="nav-item px-3.5 py-2 hover:text-white transition-colors" data-target="galeri" href="galeri.html#galeri">Galeri Foto</a>
+<a class="nav-item px-3.5 py-2 hover:text-white transition-colors" data-target="rumah-adat" href="rumah-adat.html#rumah-adat">Rumah Adat</a>
+<a class="nav-item px-3.5 py-2 hover:text-white transition-colors" data-target="kuliner" href="kuliner.html#kuliner">Kuliner</a>
+<a class="nav-item px-3.5 py-2 hover:text-white transition-colors active text-white" data-target="adat" href="adat_dan_budaya.html#adat">Adat dan Budaya</a>
+<a class="nav-item px-3.5 py-2 hover:text-white transition-colors" data-target="wisata" href="wisata.html#wisata">Wisata</a>
+<a class="nav-item px-3.5 py-2 hover:text-white transition-colors" data-target="team" href="team.html#team">Tim &amp; Kontak</a>
+</nav>
+<!-- Quick Action / CTA -->
+<div class="flex items-center gap-3">
+<a class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-500/30 transition-all hover:scale-105 active:scale-95" href="https://wa.me/6281234567890?text=Halo%20Admin%20DKI%20Jakarta,%20saya%20ingin%20bertanya%20seputar%20informasi%20wisata%20dan%20budaya" rel="noopener noreferrer" target="_blank">
+<svg class="w-4 h-4 fill-current" viewbox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path></svg>
+          Kontak Cepat
+        </a>
+</div>
+</div>
+</header>
+<!-- ==================== LIGHTBOX POP-UP FOR CULTURE SECTION ==================== -->
+<div aria-modal="true" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8 opacity-0 pointer-events-none transition-all duration-300" id="lightbox-modal" role="dialog">
+<div class="fixed inset-0 bg-slate-950/90 backdrop-blur-xl transition-opacity duration-300" onclick="closeLightbox()"></div>
+<div class="relative z-10 max-w-4xl w-full flex flex-col items-center">
+<button aria-label="Tutup Lightbox" class="absolute -top-12 right-0 p-2 text-white hover:text-brand-400 transition-colors" onclick="closeLightbox()">
+<svg class="w-8 h-8" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+<div class="rounded-2xl overflow-hidden shadow-2xl border border-white/20 bg-black/40">
+<img alt="Lightbox Enlarged" class="max-h-[75vh] w-auto object-contain mx-auto" id="lightbox-img" src=""/>
+</div>
+<div class="text-center mt-4 px-4">
+<h3 class="text-xl sm:text-2xl font-bold text-white" id="lightbox-title">Judul Budaya</h3>
+<p class="text-sm text-slate-300 mt-1 max-w-2xl mx-auto" id="lightbox-desc">Keterangan lengkap visual budaya.</p>
+</div>
+</div>
+</div>
+
+<!-- ==================== FLOATING SETTINGS MENU ==================== -->
+<div class="fixed bottom-6 left-6 z-[100]">
+  <!-- Kotak Menu -->
+  <div id="settings-menu" class="hidden absolute bottom-14 left-0 bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 p-4 w-64 transition-all duration-300">
+    <h4 class="text-sm font-bold text-slate-800 dark:text-white mb-3 border-b border-slate-100 dark:border-slate-700 pb-2">Pengaturan Tampilan</h4>
+    
+    <!-- Pilihan Tema -->
+    <div class="mb-4">
+      <span class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">Mode Tema</span>
+      <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-900 p-1 rounded-lg">
+        <button id="theme-light" class="flex-1 flex items-center justify-center gap-2 py-1.5 rounded-md text-xs font-medium transition-colors text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800">
+          <!-- Logo Matahari -->
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+          Terang
+        </button>
+        <button id="theme-dark" class="flex-1 flex items-center justify-center gap-2 py-1.5 rounded-md text-xs font-medium transition-colors text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800">
+          <!-- Logo Bulan -->
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+          Gelap
+        </button>
+      </div>
+    </div>
+
+    <!-- Pilihan Ukuran Teks -->
+    <div>
+      <span class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">Ukuran Teks</span>
+      <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-900 p-1 rounded-lg">
+        <button data-size="sm" class="text-size-btn flex-1 py-1.5 rounded-md text-xs font-bold transition-colors text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800">A- (Kecil)</button>
+        <button data-size="md" class="text-size-btn flex-1 py-1.5 rounded-md text-sm font-bold transition-colors text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800">A (Sedang)</button>
+        <button data-size="lg" class="text-size-btn flex-1 py-1.5 rounded-md text-base font-bold transition-colors text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800">A+ (Besar)</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Tombol Gear Melayang -->
+  <button id="settings-toggle" class="bg-brand-500 hover:bg-brand-600 text-white p-3 rounded-full shadow-lg shadow-brand-500/30">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+    </svg>
+  </button>
+</div>
+
+<!-- ==================== WRAPPER CONTENT (BLURRED WHEN MODAL OPENS) ==================== -->
+<div class="transition-all duration-300" id="main-content">
+
+<!-- ==================== SECTION 5: CUSTOMS & CEREMONIES (ADAT DAN BUDAYA) ==================== -->
+<section class="py-24 bg-gradient-to-b from-slate-900 to-slate-950 text-white relative" id="adat">
+<div class="max-w-7xl mx-auto px-6">
+<div class="max-w-4xl mx-auto bg-slate-800/80 rounded-3xl overflow-hidden border border-slate-700 shadow-2xl backdrop-blur-xl">
+<div class="grid grid-cols-1 lg:grid-cols-12">
+<!-- Ceremony Photo -->
+<div class="lg:col-span-6 relative min-h-[350px]">
+<img alt="Upacara Palang Pintu Betawi" class="w-full h-full object-cover" src="images/palang pintu.jpg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
+<div class="absolute bottom-6 left-6 right-6">
+<span class="inline-block px-3 py-1 rounded-full bg-brand-500 text-white text-xs font-bold uppercase tracking-wider mb-2">Upacara Adat Utama</span>
+<p class="text-xs text-slate-300">Warisan Budaya Takbenda Indonesia asal DKI Jakarta</p>
+</div>
+</div>
+<!-- Ceremony Description -->
+<div class="lg:col-span-6 p-8 lg:p-12 flex flex-col justify-center">
+<div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand-400 mb-2">
+                Tradisi Pernikahan Adat Betawi
+              </div>
+<h2 class="text-3xl sm:text-4xl font-black text-white mb-6">Tradisi Palang Pintu</h2>
+<div class="space-y-4 text-slate-300 text-sm leading-relaxed">
+<p>
+<strong>Palang Pintu</strong> merupakan prosesi adat paling ikonik dalam upacara pernikahan adat Betawi yang mempertemukan perwakilan mempelai pria dan mempelai wanita di depan pintu gerbang rumah calon pengantin.
+                </p>
+<p>
+                  Tradisi ini memadukan seni <em>baku pantun jenaka</em> penuh kearifan lokal dengan atraksi jurus silat Betawi (beksi) serta lantunan lantang ayat suci Al-Qur'an (sikap sike).
+                </p>
+<p class="text-slate-400 text-xs italic border-l-2 border-brand-500 pl-3">
+                  "Filosofinya adalah mempelai pria harus membuktikan kesiapan moral, ketangkasan fisik untuk melindungi keluarga, dan kedalaman spiritual sebelum diizinkan meminang sang pujaan hati."
+                </p>
+</div>
+<div class="mt-8 flex items-center gap-4">
+<div class="flex items-center gap-2 text-xs text-slate-400">
+<span class="w-2 h-2 rounded-full bg-emerald-400"></span> Atraksi Silat Beksi
+                </div>
+<div class="flex items-center gap-2 text-xs text-slate-400">
+<span class="w-2 h-2 rounded-full bg-amber-400"></span> Berbalas Pantun
+                </div>
+<div class="flex items-center gap-2 text-xs text-slate-400">
+<span class="w-2 h-2 rounded-full bg-cyan-400"></span> Pembacaan Sike
+                </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== SECTION 7: CULTURE (BUDAYA - 4 CATEGORIES + LIGHTBOX) ==================== -->
+<section class="py-24 bg-white relative" id="budaya">
+<div class="max-w-7xl mx-auto px-6">
+<div class="text-center max-w-3xl mx-auto mb-16">
+<div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-violet-100 text-violet-800 border border-violet-200 mb-4">
+            Ragam Mahakarya Seni Betawi
+          </div>
+<h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4">Khazanah Seni &amp; Budaya</h2>
+<p class="text-slate-600 text-lg">Klik pada setiap foto untuk memperbesar gambar dalam tampilan galeri Lightbox interaktif.</p>
+</div>
+<!-- 4 Culture Categories: Pakaian Adat, Kesenian, Tarian, Alat Musik -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Kategori 1: Pakaian Adat (Baju Sadariah & Kebaya Encim) -->
+<div class="bg-slate-50 rounded-2xl overflow-hidden border border-slate-200 hover:shadow-xl transition-all duration-300">
+<div class="relative h-64 overflow-hidden cursor-pointer group" onclick="openLightbox('images/baju.jpg', 'Pakaian Adat Betawi: Baju Sadariah &amp; Kebaya Encim', 'Pakaian adat khas Betawi dengan akulturasi budaya Tionghoa dan Melayu yang elegan dan bersahaja.')">
+<img alt="Pakaian Adat Betawi" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="images/baju.jpg"/>
+<div class="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="p-3 rounded-full bg-white/90 text-slate-900 shadow-lg">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+</div>
+<span class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-slate-900/80 text-white text-xs font-semibold backdrop-blur-sm">Pakaian Adat</span>
+</div>
+<div class="p-5">
+<h3 class="text-lg font-bold text-slate-900 mb-1">Baju Sadariah &amp; Kebaya Encim</h3>
+<p class="text-xs text-slate-600 leading-relaxed">
+                Busana tradisional pria berpeci hitam dan cukin sarung berpadu anggun dengan kebaya encim bordir floral wanita Betawi.
+              </p>
+</div>
+</div>
+<!-- Kategori 2: Kesenian (Ondel-Ondel Betawi) -->
+<div class="bg-slate-50 rounded-2xl overflow-hidden border border-slate-200 hover:shadow-xl transition-all duration-300">
+<div class="relative h-64 overflow-hidden cursor-pointer group" onclick="openLightbox('images/ondel-ondel.jpg', 'Kesenian Betawi: Ondel-Ondel', 'Boneka raksasa ikonik khas Betawi sebagai simbol penjaga tolak bala dan penyemarak pesta rakyat.')">
+<img alt="Kesenian Ondel-Ondel Betawi" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="images/ondel-ondel.jpg"/>
+<div class="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="p-3 rounded-full bg-white/90 text-slate-900 shadow-lg">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+</div>
+<span class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-slate-900/80 text-white text-xs font-semibold backdrop-blur-sm">Kesenian</span>
+</div>
+<div class="p-5">
+<h3 class="text-lg font-bold text-slate-900 mb-1">Ondel-Ondel Betawi</h3>
+<p class="text-xs text-slate-600 leading-relaxed">
+                Figur boneka anyaman bambu raksasa setinggi 2,5 meter bermahkota kembang kelapa yang selalu hadir memeriahkan hajatan kota Jakarta.
+              </p>
+</div>
+</div>
+<!-- Kategori 3: Tarian (Tari Yapong / Tari Cokek) -->
+<div class="bg-slate-50 rounded-2xl overflow-hidden border border-slate-200 hover:shadow-xl transition-all duration-300">
+<div class="relative h-64 overflow-hidden cursor-pointer group" onclick="openLightbox('images/tari yapong.jpg', 'Tarian Betawi: Tari Yapong', 'Tarian gembira kreasi maestro Bagong Kussudiardja untuk memperingati hari ulang tahun Kota Jakarta.')">
+<img alt="Tarian Betawi: Tari Yapong" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="images/tari yapong.jpg"/>
+<div class="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="p-3 rounded-full bg-white/90 text-slate-900 shadow-lg">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+</div>
+<span class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-slate-900/80 text-white text-xs font-semibold backdrop-blur-sm">Tarian</span>
+</div>
+<div class="p-5">
+<h3 class="text-lg font-bold text-slate-900 mb-1">Tari Yapong</h3>
+<p class="text-xs text-slate-600 leading-relaxed">
+                Tarian pergaulan riang berirama cepat yang menggambarkan suka cita dan dinamisme pergaulan warga Betawi metropolitan.
+              </p>
+</div>
+</div>
+<!-- Kategori 4: Alat Musik (Gambang Kromong) -->
+<div class="bg-slate-50 rounded-2xl overflow-hidden border border-slate-200 hover:shadow-xl transition-all duration-300">
+<div class="relative h-64 overflow-hidden cursor-pointer group" onclick="openLightbox('images/gambang kromong.jpg', 'Alat Musik Tradisional: Gambang Kromong', 'Orkes perpaduan gamelan berbilah kayu gambang, pencon kromong, kongahyan, tehyan, dan gong.')">
+<img alt="Alat Musik Gambang Kromong" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="images/gambang kromong.jpg"/>
+<div class="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="p-3 rounded-full bg-white/90 text-slate-900 shadow-lg">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+</div>
+<span class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-slate-900/80 text-white text-xs font-semibold backdrop-blur-sm">Alat Musik</span>
+</div>
+<div class="p-5">
+<h3 class="text-lg font-bold text-slate-900 mb-1">Gambang Kromong</h3>
+<p class="text-xs text-slate-600 leading-relaxed">
+                Ansambel musik tradisional Betawi hasil perpaduan harmonis instrumen musik pentatonis Tionghoa dan tangga nada pribumi Nusantara.
+              </p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== POP-UP MODAL (CENTER-ALIGNED, BLURRED BACKDROP) ==================== -->
+<div aria-modal="true" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 opacity-0 pointer-events-none transition-all duration-300" id="detail-modal" role="dialog">
+<!-- Frosted Backdrop with Deep Blur -->
+<div class="fixed inset-0 bg-slate-950/70 backdrop-blur-md transition-opacity duration-300" onclick="closeModal()"></div>
+<!-- Center Modal Card (Not Fullscreen) -->
+<div class="relative bg-white rounded-3xl shadow-2xl max-w-2xl w-full overflow-hidden border border-slate-200 z-10 transform scale-95 transition-all duration-300 max-h-[90vh] flex flex-col">
+<!-- Close Button -->
+<button aria-label="Tutup Dialog" class="absolute top-4 right-4 z-20 p-2.5 rounded-full bg-slate-900/60 hover:bg-slate-900 text-white backdrop-blur-md transition-colors" onclick="closeModal()">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+<!-- Modal Image -->
+<div class="relative h-64 sm:h-72 w-full shrink-0">
+<img alt="Modal Image" class="w-full h-full object-cover" id="modal-img" src=""/>
+<div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent"></div>
+<div class="absolute bottom-4 left-6 right-6">
+<span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-500 text-white mb-2 inline-block" id="modal-tag">Detail Info</span>
+<h3 class="text-2xl sm:text-3xl font-extrabold text-white" id="modal-title">Nama Objek</h3>
+</div>
+</div>
+<!-- Modal Body Text -->
+<div class="p-6 sm:p-8 overflow-y-auto space-y-4">
+<p class="text-slate-600 text-sm sm:text-base leading-relaxed" id="modal-desc">
+          Deskripsi lengkap objek akan ditampilkan di sini.
+        </p>
+<!-- Optional Maps button for tourism destination -->
+<div class="hidden pt-4 border-t border-slate-200" id="modal-maps-container">
+<a class="inline-flex items-center justify-center gap-2 w-full py-3 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm transition-colors shadow-lg shadow-emerald-600/20" href="#" id="modal-maps-btn" rel="noopener noreferrer" target="_blank">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+            Petunjuk Arah Google Maps
+          </a>
+</div>
+</div>
+</div>
+</div>
+<!-- ==================== LIGHTBOX POP-UP FOR CULTURE SECTION ==================== -->
+<div aria-modal="true" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8 opacity-0 pointer-events-none transition-all duration-300" id="lightbox-modal" role="dialog">
+<div class="fixed inset-0 bg-slate-950/90 backdrop-blur-xl transition-opacity duration-300" onclick="closeLightbox()"></div>
+<div class="relative z-10 max-w-4xl w-full flex flex-col items-center">
+<button aria-label="Tutup Lightbox" class="absolute -top-12 right-0 p-2 text-white hover:text-brand-400 transition-colors" onclick="closeLightbox()">
+<svg class="w-8 h-8" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+<div class="rounded-2xl overflow-hidden shadow-2xl border border-white/20 bg-black/40">
+<img alt="Lightbox Enlarged" class="max-h-[75vh] w-auto object-contain mx-auto" id="lightbox-img" src=""/>
+</div>
+<div class="text-center mt-4 px-4">
+<h3 class="text-xl sm:text-2xl font-bold text-white" id="lightbox-title">Judul Budaya</h3>
+<p class="text-sm text-slate-300 mt-1 max-w-2xl mx-auto" id="lightbox-desc">Keterangan lengkap visual budaya.</p>
+</div>
+</div>
+</div>
+<!-- ==================== JAVASCRIPT INTERACTIONS ==================== -->
+<script>
+    // -------------------------------------------------------------
+    // 1. CAROUSEL AUTO-SLIDER & CONTROLS
+    // -------------------------------------------------------------
+    const slides = document.querySelectorAll('.carousel-slide');
+    const dots = document.querySelectorAll('.carousel-dot');
+    let currentSlide = 0;
+    let slideInterval;
+
+    function showSlide(index) {
+      currentSlide = (index + slides.length) % slides.length;
+      slides.forEach((slide, i) => {
+        if (i === currentSlide) {
+          slide.classList.remove('opacity-0', 'z-0');
+          slide.classList.add('opacity-100', 'z-10');
+        } else {
+          slide.classList.remove('opacity-100', 'z-10');
+          slide.classList.add('opacity-0', 'z-0');
+        }
+      });
+
+      dots.forEach((dot, i) => {
+        if (i === currentSlide) {
+          dot.className = 'carousel-dot w-10 h-2.5 rounded-full bg-brand-500 transition-all duration-300';
+        } else {
+          dot.className = 'carousel-dot w-2.5 h-2.5 rounded-full bg-white/40 hover:bg-white/80 transition-all duration-300';
+        }
+      });
+    }
+
+    function nextSlide() {
+      showSlide(currentSlide + 1);
+      resetAutoSlide();
+    }
+
+    function prevSlide() {
+      showSlide(currentSlide - 1);
+      resetAutoSlide();
+    }
+
+    function changeSlide(index) {
+      showSlide(index);
+      resetAutoSlide();
+    }
+
+    function startAutoSlide() {
+      slideInterval = setInterval(() => {
+        showSlide(currentSlide + 1);
+      }, 5000);
+    }
+
+    function resetAutoSlide() {
+      clearInterval(slideInterval);
+      startAutoSlide();
+    }
+
+    startAutoSlide();
+
+    // -------------------------------------------------------------
+    // 2. GLOWING ANIMATED NAVBAR ACTIVE LINK UNDERLINE
+    // -------------------------------------------------------------
+    const navItems = document.querySelectorAll('.nav-item');
+    const indicator = document.getElementById('nav-indicator');
+
+    function updateIndicator(element) {
+      if (!element || !indicator) return;
+      const left = element.offsetLeft;
+      const width = element.offsetWidth;
+      indicator.style.left = `${left}px`;
+      indicator.style.width = `${width}px`;
+    }
+
+    // Initialize with first active link
+    const initialActive = document.querySelector('.nav-item.active') || navItems[0];
+    if (initialActive) {
+      setTimeout(() => updateIndicator(initialActive), 100);
+    }
+
+    navItems.forEach(item => {
+      item.addEventListener('click', function() {
+        navItems.forEach(link => link.classList.remove('active', 'text-white'));
+        this.classList.add('active', 'text-white');
+        updateIndicator(this);
+      });
+    });
+
+    // ScrollSpy to automatically move glowing underline indicator
+    const sections = document.querySelectorAll('section[id]');
+    window.addEventListener('scroll', () => {
+      let currentSectionId = '';
+      const scrollY = window.pageYOffset;
+
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 120;
+        const sectionHeight = section.offsetHeight;
+        if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+          currentSectionId = section.getAttribute('id');
+        }
+      });
+
+      if (currentSectionId) {
+        const activeNav = document.querySelector(`.nav-item[data-target="${currentSectionId}"]`);
+        if (activeNav && !activeNav.classList.contains('active')) {
+          navItems.forEach(link => link.classList.remove('active', 'text-white'));
+          activeNav.classList.add('active', 'text-white');
+          updateIndicator(activeNav);
+        }
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      const active = document.querySelector('.nav-item.active');
+      if (active) updateIndicator(active);
+    });
+
+    // -------------------------------------------------------------
+    // 3. CENTER-ALIGNED POP-UP MODAL DATA & CONTROLS (WITH BACKDROP BLUR)
+    // -------------------------------------------------------------
+
+    const modal = document.getElementById('detail-modal');
+    const mainContent = document.getElementById('main-content');
+    const modalImg = document.getElementById('modal-img');
+    const modalTag = document.getElementById('modal-tag');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDesc = document.getElementById('modal-desc');
+    const modalMapsContainer = document.getElementById('modal-maps-container');
+    const modalMapsBtn = document.getElementById('modal-maps-btn');
+
+    function openModal(key) {
+      const data = modalData[key];
+      if (!data) return;
+
+      modalImg.src = data.img;
+      modalTag.textContent = data.tag;
+      modalTitle.textContent = data.title;
+      modalDesc.textContent = data.desc;
+
+      if (data.mapsUrl) {
+        modalMapsContainer.classList.remove('hidden');
+        modalMapsBtn.href = data.mapsUrl;
+      } else {
+        modalMapsContainer.classList.add('hidden');
+      }
+
+      // Show modal & apply deep backdrop blur to main page body
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100');
+      const modalBox = modal.querySelector('.relative.bg-white');
+      modalBox.classList.remove('scale-95');
+      modalBox.classList.add('scale-100');
+
+      mainContent.classList.add('page-blur-active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      modal.classList.remove('opacity-100');
+      const modalBox = modal.querySelector('.relative.bg-white');
+      modalBox.classList.add('scale-95');
+      modalBox.classList.remove('scale-100');
+
+      mainContent.classList.remove('page-blur-active');
+      document.body.style.overflow = 'auto';
+    }
+
+    // -------------------------------------------------------------
+    // 4. LIGHTBOX IMAGE ENLARGER (CULTURE SECTION)
+    // -------------------------------------------------------------
+    const lightbox = document.getElementById('lightbox-modal');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxTitle = document.getElementById('lightbox-title');
+    const lightboxDesc = document.getElementById('lightbox-desc');
+
+    function openLightbox(imgSrc, title, desc) {
+      lightboxImg.src = imgSrc;
+      lightboxTitle.textContent = title;
+      lightboxDesc.textContent = desc;
+
+      lightbox.classList.remove('opacity-0', 'pointer-events-none');
+      lightbox.classList.add('opacity-100');
+      mainContent.classList.add('page-blur-active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.add('opacity-0', 'pointer-events-none');
+      lightbox.classList.remove('opacity-100');
+      mainContent.classList.remove('page-blur-active');
+      document.body.style.overflow = 'auto';
+    }
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+        closeLightbox();
+      }
+    });
+
+    // -------------------------------------------------------------
+// 5. SETTINGS: THEME & TEXT SIZE SAVER
+// -------------------------------------------------------------
+const settingsToggle = document.getElementById('settings-toggle');
+const settingsMenu = document.getElementById('settings-menu');
+
+// Buka/Tutup Menu
+settingsToggle.addEventListener('click', () => {
+  settingsMenu.classList.toggle('hidden');
+});
+
+// Tutup menu jika klik di luar kotak
+document.addEventListener('click', (e) => {
+  if (!settingsToggle.contains(e.target) && !settingsMenu.contains(e.target)) {
+    settingsMenu.classList.add('hidden');
+  }
+});
+
+// LOGIKA TEMA (DARK/LIGHT)
+const themeLightBtn = document.getElementById('theme-light');
+const themeDarkBtn = document.getElementById('theme-dark');
+const htmlEl = document.documentElement;
+
+function updateThemeUI(theme) {
+  if (theme === 'dark') {
+    themeDarkBtn.classList.add('bg-white', 'dark:bg-slate-700', 'text-brand-500', 'shadow-sm');
+    themeLightBtn.classList.remove('bg-white', 'dark:bg-slate-700', 'text-brand-500', 'shadow-sm');
+  } else {
+    themeLightBtn.classList.add('bg-white', 'text-brand-500', 'shadow-sm');
+    themeDarkBtn.classList.remove('bg-white', 'dark:bg-slate-700', 'text-brand-500', 'shadow-sm');
+  }
+}
+
+// Inisialisasi Tampilan Tombol saat halaman dimuat
+const currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+updateThemeUI(currentTheme);
+
+themeLightBtn.addEventListener('click', () => {
+  htmlEl.classList.remove('dark');
+  localStorage.setItem('theme', 'light');
+  updateThemeUI('light');
+});
+
+themeDarkBtn.addEventListener('click', () => {
+  htmlEl.classList.add('dark');
+  localStorage.setItem('theme', 'dark');
+  updateThemeUI('dark');
+});
+
+// LOGIKA UKURAN TEKS
+const sizeBtns = document.querySelectorAll('.text-size-btn');
+
+function updateSizeUI(size) {
+  sizeBtns.forEach(btn => {
+    if (btn.dataset.size === size) {
+      btn.classList.add('bg-white', 'dark:bg-slate-700', 'text-brand-500', 'shadow-sm');
+    } else {
+      btn.classList.remove('bg-white', 'dark:bg-slate-700', 'text-brand-500', 'shadow-sm');
+    }
+  });
+}
+
+const currentSize = localStorage.getItem('textSize') || 'md';
+updateSizeUI(currentSize);
+
+sizeBtns.forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    const newSize = e.target.dataset.size;
+    // Hapus kelas ukuran lama
+    htmlEl.classList.remove('text-size-sm', 'text-size-md', 'text-size-lg');
+    // Tambah kelas ukuran baru
+    htmlEl.classList.add(`text-size-${newSize}`);
+    // Simpan ke Memori Browser
+    localStorage.setItem('textSize', newSize);
+    // Ubah tampilan tombol aktif
+    updateSizeUI(newSize);
+  });
+});
+
+// -------------------------------------------------------------
+// 6. ANIMASI PERPINDAHAN HALAMAN & SCROLL REVEAL
+// -------------------------------------------------------------
+const loaderBar = document.getElementById('page-loader-bar');
+
+// Tirai pembuka sinematik â€” langsung jalankan
+setTimeout(() => {
+  document.body.classList.add('page-loaded');
+}, 50);
+
+// Scroll Reveal: tandai elemen lalu observe
+document.querySelectorAll('section').forEach(section => {
+  const elements = section.querySelectorAll('h1, h2, h3, p, .bg-white.rounded-3xl, .group.relative.rounded-3xl, .p-6.rounded-2xl');
+  let delayCounter = 1;
+  elements.forEach((el) => {
+    if (el.closest('.fixed') || el.closest('#settings-menu') || el.closest('#carousel-track')) return;
+    if (!el.classList.contains('scroll-reveal')) {
+      el.classList.add('scroll-reveal');
+      el.classList.add('delay-' + delayCounter);
+      delayCounter = (delayCounter % 3) + 1;
+    }
+  });
+});
+
+const revealElements = document.querySelectorAll('.scroll-reveal');
+const revealObserver = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('reveal-active');
+      observer.unobserve(entry.target);
+    }
+  });
+}, {
+  root: null,
+  threshold: 0.15,
+  rootMargin: "0px 0px -50px 0px"
+});
+
+revealElements.forEach(el => revealObserver.observe(el));
+
+window.addEventListener('pageshow', () => {
+  document.body.classList.remove('page-leaving');
+  document.body.classList.add('page-loaded');
+  if (loaderBar) loaderBar.classList.remove('active');
+});
+
+document.querySelectorAll('a[href]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    const targetUrl = this.getAttribute('href');
+
+    if (!targetUrl || 
+        targetUrl.startsWith('#') || 
+        targetUrl.startsWith('javascript:') || 
+        targetUrl.startsWith('mailto:') || 
+        targetUrl.startsWith('tel:') || 
+        targetUrl.startsWith('https://wa.me') || 
+        targetUrl.startsWith('https://maps') || 
+        this.target === '_blank' || 
+        e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) {
+      return;
+    }
+
+    try {
+      const urlObj = new URL(this.href, window.location.href);
+      const isSamePageAnchor = (urlObj.pathname === window.location.pathname) && urlObj.hash;
+      if (isSamePageAnchor) {
+        return;
+      }
+    } catch(err) {}
+
+    e.preventDefault();
+    if (loaderBar) loaderBar.classList.add('active');
+    document.body.classList.add('page-leaving');
+    document.body.classList.remove('page-loaded');
+
+    setTimeout(() => {
+      window.location.href = this.href;
+    }, 600); 
+  });
+});
+  </script>
+</body>
+</html>
